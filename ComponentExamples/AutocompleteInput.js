@@ -1,18 +1,23 @@
-﻿import { Component } from "./Component.js";
+﻿import { Component } from "../Component.js";
 
 /**
  * Input with autocompletion
  */
 export class AutocompleteInputComponent extends Component {
-
 	/**
 	 * Creates an input with autocompletion
-	 * 
-	 * @param {*} data array of { value: "value", libelle: "libelle" }
+	 *
+	 * @param {*} data array of { value: "value", displayName: "displayName" }
 	 * @param {*} required Whether the field is required or not
 	 * @param {*} placeholder The placeholder
 	 */
-	constructor(data, msgValidation = null, required = false, placeholder = null, callback = null) {
+	constructor(
+		data,
+		msgValidation = null,
+		required = false,
+		placeholder = null,
+		callback = null,
+	) {
 		super();
 
 		this.data = data;
@@ -26,17 +31,19 @@ export class AutocompleteInputComponent extends Component {
 	}
 
 	render() {
-		return /*html*/`
+		return /*html*/ `
 		<div id="container">
 			<span id="c">
-				<input type="text" id="myInput" name="myInput" placeholder="${this.placeholder ? this.placeholder : ''}" ${this.required ? 'required' : ''}>
+				<input type="text" id="myInput" name="myInput" placeholder="${
+					this.placeholder ? this.placeholder : ""
+				}" ${this.required ? "required" : ""}>
 			</span>
 		</div>
 	`;
 	}
 
 	renderCSS() {
-		return /*css*/`
+		return /*css*/ `
 
 	#container {
 		width: 100%;
@@ -48,6 +55,7 @@ export class AutocompleteInputComponent extends Component {
 
 	#myInput {
 		width: 100% !important;
+		height: 2em;
 	}
 
 	#c {
@@ -96,18 +104,11 @@ export class AutocompleteInputComponent extends Component {
 	`;
 	}
 
-
-
 	runEvents() {
 		this.autocomplete(this.data);
 
 		if (!!this.msgValidation) this.validation();
-
 	}
-
-
-
-
 
 	/* =============== Other functions =============== */
 
@@ -115,7 +116,7 @@ export class AutocompleteInputComponent extends Component {
 		let res = [];
 
 		for (const elem of this.data) {
-			res.push(elem.libelle);
+			res.push(elem.displayName);
 		}
 
 		return res;
@@ -123,25 +124,29 @@ export class AutocompleteInputComponent extends Component {
 
 	/**
 	 * Returns the selected element
-	 * 
-	 * @returns element:  { value: "value", libelle: "libelle" } || null
+	 * When an element is selected (click), the value is saved
+	 *
+	 * @returns element:  { value: "value", displayName: "displayName" } || null
 	 */
 	getSelectedElement() {
 		if (!!!this.value) {
 			const input = this.__html__.querySelector("#myInput");
 			if (!input) return null;
 
-			this.value = this.data.find(elem => elem.libelle == input.value)
-			if (!!this.value) return this.value
+			this.value = this.data.find(
+				(elem) => elem.displayName == input.value,
+			);
+			if (!!this.value) return this.value;
 		}
-		return !!this.value ? this.data.find(elem => elem.value == this.value) : null;
+		return !!this.value
+			? this.data.find((elem) => elem.value == this.value)
+			: null;
 	}
-
 
 	/**
 	 * Whether the field is valid or not (can be empty)
-	 * 
-	 * @returns 
+	 *
+	 * @returns
 	 */
 	validation() {
 		const input = this.__html__.querySelector("#myInput");
@@ -154,21 +159,14 @@ export class AutocompleteInputComponent extends Component {
 
 			if (!self.getSelectedElement() && !!input.value)
 				input.setCustomValidity(this.msgValidation);
-			else
-				input.setCustomValidity('');
-
-		})
-
+			else input.setCustomValidity("");
+		});
 	}
 
-
-
-
-
-
 	/**
-	 * Completion automatique de l'input par collaborateurs
-	 * 
+	 * Autocompletion while typing
+	 *
+	 * @param {*} data The data to complete with
 	 */
 	autocomplete(data) {
 		const inp = this.__html__.querySelector("#myInput");
@@ -176,18 +174,21 @@ export class AutocompleteInputComponent extends Component {
 
 		let self = this;
 
-
 		/*the autocomplete function takes two arguments,
 		the text field element and an array of possible autocompleted values:*/
 		var currentFocus;
 		/*execute a function when someone writes in the text field:*/
 		inp.addEventListener("input", function (e) {
-
-			var a, b, i, val = this.value;
+			var a,
+				b,
+				i,
+				val = this.value;
 
 			/*close any already open lists of autocompleted values*/
 			closeAllLists();
-			if (!val) { return false; }
+			if (!val) {
+				return false;
+			}
 			currentFocus = -1;
 			/*create a DIV element that will contain the items (values):*/
 			a = document.createElement("DIV");
@@ -203,7 +204,8 @@ export class AutocompleteInputComponent extends Component {
 					/*create a DIV element for each matching element:*/
 					b = document.createElement("DIV");
 					/*make the matching letters bold:*/
-					b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+					b.innerHTML =
+						"<strong>" + arr[i].substr(0, val.length) + "</strong>";
 					b.innerHTML += arr[i].substr(val.length);
 					/*insert a input field that will hold the current array item's value:*/
 					b.innerHTML += `<input type='hidden' value="${arr[i]}">`;
@@ -212,20 +214,28 @@ export class AutocompleteInputComponent extends Component {
 						/*insert the value for the autocomplete text field:*/
 						inp.value = this.getElementsByTagName("input")[0].value;
 
-						// Get the selected value (not libelle)
-						const selectedElement = data.find(elem => elem.libelle.toLowerCase().replace(/(\r\n|\n|\r)/gm, "") == inp.value.toLowerCase().replace(/(\r\n|\n|\r)/gm, ""));
+						// Get the selected value (not displayName)
+						const selectedElement = data.find(
+							(elem) =>
+								elem.displayName
+									.toLowerCase()
+									.replace(/(\r\n|\n|\r)/gm, "") ==
+								inp.value
+									.toLowerCase()
+									.replace(/(\r\n|\n|\r)/gm, ""),
+						);
 
-						self.value = !!selectedElement ? selectedElement.value : '';
+						self.value = !!selectedElement
+							? selectedElement.value
+							: "";
 
-						if (!!self.value)
-							inp.setCustomValidity('')
+						// Create validation with custom message
+						if (!!self.value) inp.setCustomValidity("");
 
-
-						// Then, execute callback 
+						// Then, execute callback
 						try {
 							self.callback(data.indexOf(selectedElement));
-						} catch (error) { }
-
+						} catch (error) {}
 
 						/*close the list of autocompleted values,
 						(or any other open lists of autocompleted values:*/
@@ -237,7 +247,9 @@ export class AutocompleteInputComponent extends Component {
 		});
 		/*execute a function presses a key on the keyboard:*/
 		inp.addEventListener("keydown", function (e) {
-			var x = self.__html__.querySelector("#" + this.id + "autocomplete-list");
+			var x = self.__html__.querySelector(
+				"#" + this.id + "autocomplete-list",
+			);
 			if (x) x = x.getElementsByTagName("div");
 			if (e.keyCode == 40) {
 				/*If the arrow DOWN key is pressed,
@@ -245,7 +257,8 @@ export class AutocompleteInputComponent extends Component {
 				currentFocus++;
 				/*and and make the current item more visible:*/
 				addActive(x);
-			} else if (e.keyCode == 38) { //up
+			} else if (e.keyCode == 38) {
+				//up
 				/*If the arrow UP key is pressed,
 				decrease the currentFocus variable:*/
 				currentFocus--;
@@ -267,25 +280,23 @@ export class AutocompleteInputComponent extends Component {
 			/*start by removing the "active" class on all items:*/
 			removeActive(x);
 			if (currentFocus >= x.length) currentFocus = 0;
-			if (currentFocus < 0) currentFocus = (x.length - 1);
+			if (currentFocus < 0) currentFocus = x.length - 1;
 			/*add class "autocomplete-active":*/
 			x[currentFocus].classList.add("autocomplete-active");
 		}
 
 		function removeActive(x) {
-			/*a function to remove the "active" class from all autocomplete items:*/
-			for (var i = 0; i < x.length; i++) {
-				x[i].classList.remove("autocomplete-active");
-			}
+			for (const elem of x) elem.classList.remove("autocomplete-active");
 		}
-		function closeAllLists(elmnt) {
+
+		function closeAllLists(element) {
 			/*close all autocomplete lists in the document,
 			except the one passed as an argument:*/
 			var x = document.getElementsByClassName("autocomplete-items");
-			for (var i = 0; i < x.length; i++) {
-				if (elmnt != x[i] && elmnt != inp) {
-					x[i].parentNode.removeChild(x[i]);
-				}
+
+			for (const elem of x) {
+				if (element != elem && element != inp)
+					elem.parentNode.removeChild(elem);
 			}
 		}
 		/*execute a function when someone clicks in the document:*/

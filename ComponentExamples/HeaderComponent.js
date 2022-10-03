@@ -1,19 +1,16 @@
-﻿import { Component } from "./Component.js";
-
-
+﻿import { Component } from "../Component.js";
 
 /**
- * Formated Header
+ * Formatted Header
  */
 export class HeaderComponent extends Component {
-	
 	constructor(title) {
 		super();
 		this.title = title;
 	}
 
 	render() {
-		return /*html*/`
+		return /*html*/ `
 		<div>
 			<span id="switch-table" class="marginB-3 flex-col">
 				<p class="title">${this.title}</p>
@@ -23,7 +20,7 @@ export class HeaderComponent extends Component {
 	}
 
 	renderCSS() {
-		return /*css*/`
+		return /*css*/ `
 
 		div {
 			width: 100%;

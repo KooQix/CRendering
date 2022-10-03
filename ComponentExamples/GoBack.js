@@ -1,9 +1,6 @@
-﻿import { Component } from "./Component.js";
-
-
+﻿import { Component } from "../Component.js";
 
 export class GoBackComponent extends Component {
-
 	constructor(callback) {
 		super();
 		this.default = true;
@@ -11,7 +8,7 @@ export class GoBackComponent extends Component {
 	}
 
 	render() {
-		return /*html*/`
+		return /*html*/ `
 		<div id="container">
 			<a title="Retourner &agrave; l'accueil" class="flex-col" style="cursor: pointer">
 				<img src="/BritlineManager/Content/icons/left-arrow.png" alt="Alternate Text" class="goBack" />
@@ -20,9 +17,8 @@ export class GoBackComponent extends Component {
 		`;
 	}
 
-
 	renderCSS() {
-		return /*css*/`
+		return /*css*/ `
 
 		#container {
 			display: flex;
@@ -45,23 +41,17 @@ export class GoBackComponent extends Component {
 		`;
 	}
 
-
 	runEvents() {
 		this.goBack();
 	}
-
 
 	/* =============== Events =============== */
 
 	goBack() {
 		this.__html__.querySelector("a")?.addEventListener("click", () => {
 			this.callback();
-		})
+		});
 	}
 
-
-
 	/* =============== Others =============== */
-
-
 }

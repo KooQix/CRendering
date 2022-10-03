@@ -1,8 +1,8 @@
 ﻿import { DataTableComponent } from "./DataTable.js";
 
-
 /**
  * Datatable with a button next to the input
+ *
  * @param {*} header List of string
  * @param {*} content List of list of string
  * @param {*} buttonTitle Text of the button
@@ -10,20 +10,24 @@
  * @param {*} onClickCallback Callback when an element of the table is clicked on
  */
 export class DataTableButtonComponent extends DataTableComponent {
+	constructor(
+		header,
+		content,
+		buttonTitle,
+		callbackButton,
+		onClickCallback = null,
+		isSortable = false,
+	) {
+		super(header, content, onClickCallback, isSortable);
 
-	constructor(header, content, buttonTitle, callbackButton, onClickCallback=null) {
-		super(header, content, onClickCallback);
-		
 		this.buttonTitle = buttonTitle;
 		this.callback = callbackButton;
 	}
 
-
-
 	render() {
-		return /*html*/`
+		return /*html*/ `
 		<span class="flex-row full-width marginB-3 marginT-1">
-			<input type="text" id="filter" placeholder="Filtrer la table" class="half-width">
+			<input type="text" id="filter" placeholder="Filter the table" class="half-width">
 			<button>${this.buttonTitle}</button>
 		</span>
 		<table id="myTable" class="marginB-3 marginT-1">
@@ -36,11 +40,10 @@ export class DataTableButtonComponent extends DataTableComponent {
 		`;
 	}
 
-
 	renderCSS() {
 		let res = super.renderCSS();
 
-		res += /*css*/`\n
+		res += /*css*/ `\n
 		button {
 			padding-left: 2em;
 			padding-right: 2em;
@@ -58,9 +61,7 @@ export class DataTableButtonComponent extends DataTableComponent {
 		}
 		`;
 		return res;
-	} 
-
-
+	}
 
 	runEvents() {
 		super.runEvents();
@@ -68,11 +69,14 @@ export class DataTableButtonComponent extends DataTableComponent {
 		this.onClick();
 	}
 
-
 	/* =============== Events =============== */
-	
+
+	/**
+	 * When button next to the filter input is clicked
+	 */
 	onClick() {
-		this.__html__.querySelector("button")?.addEventListener("click", this.callback);
+		this.__html__
+			.querySelector("button")
+			?.addEventListener("click", this.callback);
 	}
 }
-

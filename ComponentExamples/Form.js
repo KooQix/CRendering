@@ -1,30 +1,23 @@
-﻿import { Component } from "./Component.js";
+﻿import { Component } from "../Component.js";
 import { HeaderComponent } from "./HeaderComponent.js";
-
 
 /**
  * Base form components
- * 
+ *
  * Params
- * @param {*} headerTitle 
+ * @param {*} headerTitle
  * @param {*} formElements Html of the elements of the form
- * @param {*} id 
- * 
+ * @param {*} id Id of the element: 0 <=> new empty form; else get the element and fill the form
+ *
  * Methods to override
- * @method async init() 
+ * @method async init()
  * @method async initForm() after calling super.initForm()
- * @method submit() 
- * @method deleteEvents() 
- * 
+ * @method submit()
+ * @method deleteEvents()
+ *
  */
 export class FormComponent extends Component {
-
-
-	constructor(
-		headerTitle,
-		formElements,
-		id = 0
-	) {
+	constructor(headerTitle, formElements, id = 0) {
 		super();
 
 		this.id = id;
@@ -34,22 +27,20 @@ export class FormComponent extends Component {
 		this.__initComponent__(headerTitle);
 	}
 
-	async init() { }
-
+	async init() {}
 
 	__initComponent__(headerTitle) {
 		setTimeout(() => {
 			try {
-				if (!this.__html__.querySelector("headercomponent")) throw new Error();
+				if (!this.__html__.querySelector("headercomponent"))
+					throw new Error();
 
 				new HeaderComponent(headerTitle);
-				if (this.id !== 0) this.initForm(this.id)
+				if (this.id !== 0) this.initForm(this.id);
 				else {
 					const deleteButton = this.__html__.querySelector("#delete");
-					if (!!deleteButton)
-						deleteButton.style.display = "none";
+					if (!!deleteButton) deleteButton.style.display = "none";
 				}
-
 			} catch (error) {
 				setTimeout(() => {
 					this.__initComponent__(headerTitle);
@@ -58,21 +49,18 @@ export class FormComponent extends Component {
 		}, 20);
 	}
 
-
-
-
 	render() {
 		let elements = "";
 
 		for (const elem of this.formElements) {
-			elements += /*html*/`
+			elements += /*html*/ `
 			<span class="elem">
 				${elem}
 			</span>
 			`;
 		}
 
-		return /*html*/`
+		return /*html*/ `
 		<form >
 			<headercomponent></headercomponent>
 			${elements}
@@ -85,12 +73,8 @@ export class FormComponent extends Component {
 		`;
 	}
 
-
-
-
-
 	renderCSS() {
-		return /*css*/`
+		return /*css*/ `
 		form {
 			margin-top: 3em;
 			width: 100%;
@@ -152,7 +136,7 @@ export class FormComponent extends Component {
 
 	/**
 	 * Fill in the form with client information when updating
-	 * 
+	 *
 	 */
 	async initForm() {
 		try {
@@ -160,46 +144,46 @@ export class FormComponent extends Component {
 		} catch (error) {
 			setTimeout(() => this.initForm(), 10);
 		}
-
 	}
 
-
 	submit() {
-		this.__html__.querySelector("form")?.addEventListener("submit", async () => {
-			try {
-
-				if (this.id === 0) {
-					// Create
+		this.__html__
+			.querySelector("form")
+			?.addEventListener("submit", async () => {
+				try {
+					if (this.id === 0) {
+						// Create
+					} else {
+						// Update
+					}
+				} catch (error) {
+					console.log(error);
+					alert(
+						"Une erreur est survenue lors de la création. Veuillez réessayer plus tard",
+					);
 				}
-
-				else {
-					// Update
-				}
-
-
-			} catch (error) {
-				console.log(error);
-				alert("Une erreur est survenue lors de la création. Veuillez réessayer plus tard")
-			}
-		})
-
+			});
 	}
 
 	/**
-	 * Event on click delete button => http request 
+	 * Event on click delete button => http request
 	 */
 	deleteEvent() {
-		this.__html__.querySelector("#delete")?.addEventListener("click", async () => {
-			const res = confirm("Êtes-vous sûr de vouloir supprimer cet élément?");
-			if (!res) return;
+		this.__html__
+			.querySelector("#delete")
+			?.addEventListener("click", async () => {
+				const res = confirm(
+					"Êtes-vous sûr de vouloir supprimer cet élément?",
+				);
+				if (!res) return;
 
-			try {
-				// Delete and reload/go back
-			} catch (error) {
-				alert("Une erreur est survenue. Veuillez réessayer plus tard");
-			}
-
-		})
+				try {
+					// Delete and reload/go back
+				} catch (error) {
+					alert(
+						"Une erreur est survenue. Veuillez réessayer plus tard",
+					);
+				}
+			});
 	}
-
 }
