@@ -30,7 +30,7 @@ export class DataTableComponent extends Component {
 	render() {
 		return /*html*/ `
 		<span class="flex-row full-width marginB-1">
-			<input type="text" id="filter" placeholder="Filtrer la table" class="half-width">
+			<input type="text" id="filter" placeholder="Filter table" class="half-width">
 		</span>
 		<table id="myTable" class="marginB-3 marginT-1">
 			<tr>
@@ -156,7 +156,7 @@ export class DataTableComponent extends Component {
 		this.htmlHeader = "<thead title='Cliquer pour ordonner'>";
 		for (const h of this.header) {
 			this.htmlHeader += /*html*/ `
-			<td class="elem-header">${h}<img src="/BritlineManager/Content/icons/sort.png"></td>
+			<td class="elem-header">${h}<img src="../resources/sort.png"></td>
 			`;
 		}
 		this.htmlHeader += "</thead>";

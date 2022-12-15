@@ -1,4 +1,5 @@
 import { AutocompleteInputComponent } from "./ComponentExamples/AutocompleteInput.js";
+import { DataTableComponent } from "./ComponentExamples/DataTable.js";
 
 //////////////////// Autocomplete \\\\\\\\\\\\\\\\\\\\
 
@@ -22,14 +23,14 @@ const mockDataAutocomplete = [
 	},
 ];
 
-// Creating the component
+// Create the component
 new AutocompleteInputComponent(
 	mockDataAutocomplete,
 	"Please, select an element among those in the list",
 	true,
 	"ex: France",
 	(index) => {
-		alert("You selected: " + mockDataAutocomplete[index]);
+		alert("You selected: " + mockDataAutocomplete[index].displayName);
 	},
 );
 
@@ -37,4 +38,19 @@ new AutocompleteInputComponent(
 
 // Mock data
 
-// Creating component
+const tableHeaders = ["Country", "Population (millions)", "Capital"];
+
+const data = [
+	["France", 67.5, "Paris"],
+	["United States", 331.9, "Washington, DC"],
+	["England", 55.98, "London"],
+];
+
+// Create component
+
+new DataTableComponent(
+	tableHeaders,
+	data,
+	(index) => alert(`You clicked on ${data[index][0]}!`),
+	true,
+);

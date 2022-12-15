@@ -8,6 +8,7 @@ export class AutocompleteInputComponent extends Component {
 	 * Creates an input with autocompletion
 	 *
 	 * @param {*} data array of { value: "value", displayName: "displayName" }
+	 * @param {*} data array of { value: "value", libelle: "libelle" }
 	 * @param {*} required Whether the field is required or not
 	 * @param {*} placeholder The placeholder
 	 */

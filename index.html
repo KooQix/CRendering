@@ -1,7 +1,27 @@
 <!DOCTYPE html>
 
 <style>
+	body,
+	.block {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.title {
+		font-size: 3em;
+		background: linear-gradient(to right, red, yellow);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+	}
+
 	.autocomplete {
+		width: 50%;
+		margin-bottom: 5em;
+	}
+
+	.table {
 		width: 100%;
 	}
 </style>
@@ -10,13 +30,24 @@
 		<meta charset="UTF-8" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Component rendering</title>
+		<link rel="stylesheet" href="./main.css" />
+		<title>CRendering</title>
 	</head>
 	<body>
+		<!-- Some examples of usage -->
+
+		<h1 class="title">CRendering - JavaScript Components Rendering</h1>
+
 		<!-- Autocompletion -->
-		<div class="autocomplete">
+		<div class="autocomplete block">
 			<h1>Autocomplete</h1>
 			<AutocompleteInputComponent></AutocompleteInputComponent>
+		</div>
+
+		<!-- Datatable -->
+		<div class="table block">
+			<h1>Data table</h1>
+			<DataTableComponent></DataTableComponent>
 		</div>
 	</body>
 </html>
